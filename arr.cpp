@@ -23,30 +23,30 @@ struct array{
     }
     //Функции пошли
     
-    void add(int value) {
+    void add(int value) { //O(1)
         data[dlina++] = value;
     }
     
-    void add_index(int index, int value){
+    void add_index(int index, int value){ //O(1)
         data[index] = value;
     }
     
-    int get_index(int index){
+    int get_index(int index){ //O(1)
         return data[index];
     }
     
-    void del_index(int index){
+    void del_index(int index){ //O(n)
         for (int i = index; i<dlina; i++){
             data[i] = data[i + 1];
         }
         dlina--;
     }
     
-    void zamena(int index, int value){
+    void zamena(int index, int value){ //O(1)
         data[index] = value;
     }
     
-    int get_dlina(){
+    int get_dlina(){ //O(1)
         return dlina;
     }
     //изменение вместимости
@@ -60,7 +60,7 @@ struct array{
         vmest = new_capacity;
     }
     
-    void print(){
+    void print(){ //O(n)
         for (int* it = begin(); it != end(); ++it) {
             cout << *it << " ";
         }

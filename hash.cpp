@@ -45,7 +45,7 @@ public:
         delete[] table;
     }
 
-    void insert(const string& key, int value) {
+    void insert(const string& key, int value) { //O(1) (n)
         int index = hash(key);
         Node* newNode = new Node(key, value);
 
@@ -71,7 +71,7 @@ public:
         size++;
     }
 
-    int get(const string& key) {
+    int get(const string& key) { //O(1) (n)
         int index = hash(key);
         Node* current = table[index];
 
@@ -85,7 +85,7 @@ public:
         throw out_of_range("Ключ не найден");
     }
 
-    void remove(const string& key) {
+    void remove(const string& key) { //O(1) (n)
         int index = hash(key);
         Node* current = table[index];
         Node* prev = nullptr;

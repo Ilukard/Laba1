@@ -80,7 +80,7 @@ Node *balance(Node *node) {
 }
 
 // Функция для вставки элемента в АВЛ-дерево
-Node *insert(Node *node, int key) {
+Node *insert(Node *node, int key) { //O(log n)
     if (!node) {
         return new Node(key);
     }
@@ -97,7 +97,7 @@ Node *insert(Node *node, int key) {
 }
 
 // Функция для поиска элемента в АВЛ-дереве
-Node *find(Node *node, int key) {
+Node *find(Node *node, int key) { //O(log n)
     if (!node || node->key == key) {
         return node;
     }
@@ -118,7 +118,7 @@ Node *findMin(Node *node) {
 }
 
 // Функция для удаления элемента из АВЛ-дерева
-Node *remove(Node *node, int key) {
+Node *remove(Node *node, int key) { //O(log n)
     if (!node) {
         return nullptr;
     }
@@ -152,7 +152,7 @@ Node *remove(Node *node, int key) {
 }
 
 // Вспомогательная функция для рекурсивного вывода дерева с отступами
-void printTreeHelper(Node *node, string indent, bool last) {
+void printTreeHelper(Node *node, string indent, bool last) { //O(log n)
     if (node) {
         cout << indent;
         if (last) {

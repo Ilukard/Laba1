@@ -21,7 +21,7 @@ class queue{
         }
     }
     
-    void print(){
+    void print(){ //O(n)
         Node* current = head;
         while (current != nullptr){
             cout << current->data << " -> ";
@@ -30,7 +30,7 @@ class queue{
         cout << "nullptr" << endl;
     }
 
-    void push(int value){
+    void push(int value){ //O(1)
         Node* newNode = new Node(value);
         if (head == nullptr) { // Если список пуст, новый узел становится головой
             head = newNode;
@@ -43,7 +43,7 @@ class queue{
         }
     }
 
-    int pop(){
+    int pop(){ //O(1)
         Node* delNode = head;
         head = delNode->next;
         return delNode->data;

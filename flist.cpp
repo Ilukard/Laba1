@@ -23,7 +23,7 @@ class flist{
     }
 
     //функции
-    void print(){
+    void print(){ //O(n)
         Node* current = head;
         while (current != nullptr){
             cout << current->data << " -> ";
@@ -32,7 +32,7 @@ class flist{
         cout << "nullptr" << endl;
     }
     
-    void add_konec(int value){
+    void add_konec(int value){ //O(n)
         Node* newNode = new Node(value);
         if (head == nullptr) { // Если список пуст, новый узел становится головой
             head = newNode;
@@ -45,19 +45,19 @@ class flist{
         }
     }
 
-    void add_nachalo(int value){
+    void add_nachalo(int value){ //O(1)
         Node* newNode = new Node(value);
         newNode->next = head;
         head = newNode;
     }
     
-    void del_nachalo(){
+    void del_nachalo(){ //O(1)
         Node* delNode = head;
         head = delNode->next;
         delete delNode;
     }
 
-    void del_konec(){
+    void del_konec(){ //O(n)
         Node* delNode = head;
         while (delNode->next->next != nullptr) { // Находим предпоследний узел
             delNode = delNode->next;

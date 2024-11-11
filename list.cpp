@@ -12,7 +12,7 @@ struct Node {
 };
 
 // Функция для добавления элемента в конец списка
-void append(Node **head, int data) {
+void append(Node **head, int data) { //O(1)
     Node *newNode = new Node(data);
     if (!*head) {
         *head = newNode;
@@ -29,7 +29,7 @@ void append(Node **head, int data) {
 }
 
 // Функция для поиска элемента в списке
-Node *find(Node *head, int key) {
+Node *find(Node *head, int key) { //O(n)
     Node *current = head;
     while (current) {
         if (current->data == key) {
@@ -41,7 +41,7 @@ Node *find(Node *head, int key) {
 }
 
 // Функция для удаления элемента из списка
-void remove(Node **head, int key) {
+void remove(Node **head, int key) { //O(n)
     Node *nodeToDelete = find(*head, key);
     if (!nodeToDelete) {
         return;
@@ -65,7 +65,7 @@ void remove(Node **head, int key) {
 }
 
 // Функция для вывода списка
-void printList(Node *head) {
+void printList(Node *head) { //O(n)
     Node *current = head;
     while (current) {
         cout << current->data << " ";
