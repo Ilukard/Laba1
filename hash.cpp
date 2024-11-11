@@ -1,81 +1,136 @@
 #include <iostream>
-#include <list>
-#include <vector>
+#include <string>
 
 using namespace std;
 
 class HashTable {
 private:
-    int capacity;
-    vector<list<int>> table;
+    struct Node {
+        string key;
+        int value;
+        Node* next;
 
-    // Простая хеш-функция
-    int hashFunction(int key) {
-        return key % capacity;
+        Node(const string& k, int v) : key(k), value(v), next(nullptr) {}
+    };
+
+    Node** table;
+    int capacity;
+    int size;
+
+    int hash(const string& key) {
+        int hashValue = 0;
+        for (char ch : key) {
+            hashValue += static_cast<int>(ch);
+        }
+        return hashValue % capacity;
     }
 
 public:
-    HashTable(int cap) : capacity(cap) {
-        table.resize(capacity);
+    HashTable(int cap = 10) : capacity(cap), size(0) {
+        table = new Node*[capacity];
+        for (int i = 0; i < capacity; i++) {
+            table[i] = nullptr;
+        }
     }
 
-    // Функция для вставки элемента в хеш-таблицу
-    void insert(int key) {
-        int index = hashFunction(key);
-        table[index].push_back(key);
-    }
-
-    // Функция для поиска элемента в хеш-таблице
-    bool search(int key) {
-        int index = hashFunction(key);
-        for (int x : table[index]) {
-            if (x == key) {
-                return true;
+    ~HashTable() {
+        for (int i = 0; i < capacity; i++) {
+            Node* current = table[i];
+            while (current) {
+                Node* temp = current;
+                current = current->next;
+                delete temp;
             }
         }
-        return false;
+        delete[] table;
     }
 
-    // Функция для удаления элемента из хеш-таблицы
-    void remove(int key) {
-        int index = hashFunction(key);
-        table[index].remove(key);
-    }
+    void insert(const string& key, int value) {
+        int index = hash(key);
+        Node* newNode = new Node(key, value);
 
-    // Функция для вывода содержимого хеш-таблицы
-    void printTable() {
-        for (int i = 0; i < capacity; ++i) {
-            cout << "Ячейка " << i << ": ";
-            for (int x : table[i]) {
-                cout << x << " ";
+        if (table[index] == nullptr) {
+            table[index] = newNode;
+        } else {                                //метод цепочек
+            Node* current = table[index];
+            while (current->next) {
+                if (current->key == key) {
+                    current->value = value;
+                    delete newNode;
+                    return;
+                }
+                current = current->next;
             }
-            cout << endl;
+            if (current->key == key) {
+                current->value = value;
+                delete newNode;
+            } else {
+                current->next = newNode;
+            }
         }
+        size++;
+    }
+
+    int get(const string& key) {
+        int index = hash(key);
+        Node* current = table[index];
+
+        while (current) {
+            if (current->key == key) {
+                return current->value;
+            }
+            current = current->next;
+        }
+
+        throw out_of_range("Ключ не найден");
+    }
+
+    void remove(const string& key) {
+        int index = hash(key);
+        Node* current = table[index];
+        Node* prev = nullptr;
+
+        while (current) {
+            if (current->key == key) {
+                if (prev == nullptr) {
+                    table[index] = current->next;
+                } else {
+                    prev->next = current->next;
+                }
+                delete current;
+                size--;
+                return;
+            }
+            prev = current;
+            current = current->next;
+        }
+    }
+
+    int getSize() {
+        return size;
     }
 };
 
 int main() {
-    HashTable ht(10);
+    HashTable hashTable;
 
-    ht.insert(10);
-    ht.insert(20);
-    ht.insert(15);
-    ht.insert(5);
-    ht.insert(25);
+    hashTable.insert("яблоки", 5);
+    hashTable.insert("молоко", 10);
+    hashTable.insert("огурцы", 7);
 
-    cout << "Хэш-таблица:" << endl;
-    ht.printTable();
+    cout << "значение для 'яблоки': " << hashTable.get("яблоки") << endl;
+    cout << "значение для 'молоко': " << hashTable.get("молоко") << endl;
+    cout << "значение для 'огурцы': " << hashTable.get("огурцы") << endl;
 
-    if (ht.search(15)) {
-        cout << "15 найдено." << endl;
-    } else {
-        cout << "15 не найдено." << endl;
+    hashTable.remove("молоко");
+
+    cout << "Size after removing 'молоко': " << hashTable.getSize() << endl;
+
+    try {
+        cout << "значение для 'молоко' after removal: " << hashTable.get("молоко") << endl;
+    } catch (const out_of_range& e) {
+        cout << "Ошибка: " << e.what() << endl;
     }
-
-    ht.remove(15);
-
-    cout << "После удаления 15:" << endl;
-    ht.printTable();
 
     return 0;
 }
