@@ -151,13 +151,28 @@ Node *remove(Node *node, int key) {
     return balance(node);
 }
 
-// Функция для вывода дерева (in-order обход)
-void printTree(Node *node) {
+// Вспомогательная функция для рекурсивного вывода дерева с отступами
+void printTreeHelper(Node *node, string indent, bool last) {
     if (node) {
-        printTree(node->left);
-        cout << node->key << " ";
-        printTree(node->right);
+        cout << indent;
+        if (last) {
+            cout << "\\----";
+            indent += "     ";
+        } else {
+            cout << "|----";
+            indent += "|    ";
+        }
+
+        cout << node->key << endl;
+
+        printTreeHelper(node->left, indent, false);
+        printTreeHelper(node->right, indent, true);
     }
+}
+
+// Функция для вывода дерева в древовидном формате
+void printTree(Node *node) {
+    printTreeHelper(node, "", true);
 }
 
 int main() {
@@ -169,13 +184,13 @@ int main() {
     root = insert(root, 25);
     root = insert(root, 5);
 
-    cout << "AVL Дерево: ";
+    cout << "AVL Дерево: " << endl;
     printTree(root);
     cout << endl;
 
     root = remove(root, 20);
 
-    cout << "После удаления 20: ";
+    cout << "После удаления 20: " << endl;
     printTree(root);
     cout << endl;
 
