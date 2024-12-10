@@ -1,28 +1,30 @@
 #include <iostream>
 using namespace std;
 
+template <typename T>
 struct Node{
-    int data;
+    T data;
     Node* next;
-    Node(int value) : data(value), next(nullptr) {}
+    Node(T value) : data(value), next(nullptr) {}
 };
 
+template <typename T>
 class stack{
     private:
-    Node *head;
+    Node<T> *head;
     public:
     stack(): head(nullptr){}
 
     ~stack(){
         while (head != nullptr) {
-            Node* temp = head;
+            Node<T>* temp = head;
             head = head->next;
             delete temp;
         }
     }
     
     void print(){ //O(n)
-        Node* current = head;
+        Node<T>* current = head;
         while (current != nullptr){
             cout << current->data << " -> ";
             current = current->next;
@@ -30,22 +32,23 @@ class stack{
         cout << "nullptr" << endl;
     }
 
-    void push(int value){ //O(1)
-        Node* newNode = new Node(value);
+    void push(T value){ //O(1)
+        Node<T>* newNode = new Node(value);
         newNode->next = head;
         head = newNode;
     }
 
-    int pop(){ //O(1)
-        Node* delNode = head;
+    T pop(){ //O(1)
+        Node<T>* delNode = head; 
         head = delNode->next;
-        return delNode->data;
+        T result = delNode->data;
         delete delNode;
+        return result;
     }
 };
 
 int main(){
-    stack stc;
+    stack<int> stc;
     stc.push(1);
     stc.push(2);
     stc.push(3);

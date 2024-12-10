@@ -1,28 +1,30 @@
 #include <iostream>
 using namespace std;
 
+template <typename T>
 struct Node{
-    int data;
+    T data;
     Node* next;
-    Node(int value) : data(value), next(nullptr) {}
+    Node(T value) : data(value), next(nullptr) {}
 };
 
+template <typename T>
 class queue{
     private:
-    Node *head;
+    Node<T> *head;
     public:
     queue(): head(nullptr){}
 
     ~queue(){
         while (head != nullptr) {
-            Node* temp = head;
+            Node<T>* temp = head;
             head = head->next;
             delete temp;
         }
     }
     
     void print(){ //O(n)
-        Node* current = head;
+        Node<T>* current = head;
         while (current != nullptr){
             cout << current->data << " -> ";
             current = current->next;
@@ -31,11 +33,11 @@ class queue{
     }
 
     void push(int value){ //O(1)
-        Node* newNode = new Node(value);
+        Node<T>* newNode = new Node(value);
         if (head == nullptr) { // Если список пуст, новый узел становится головой
             head = newNode;
         } else {
-            Node* current = head;
+            Node<T>* current = head;
             while (current->next != nullptr) { // Находим последний узел
                 current = current->next;
             }
@@ -44,15 +46,16 @@ class queue{
     }
 
     int pop(){ //O(1)
-        Node* delNode = head;
+        Node<T>* delNode = head;
         head = delNode->next;
-        return delNode->data;
+        T result = delNode->data;
         delete delNode;
+        return result;
     }
 };
 
 int main(){
-    queue och;
+    queue<int> och;
     och.push(1);
     och.push(2);
     och.push(3);
