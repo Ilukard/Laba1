@@ -1,10 +1,11 @@
 #include <iostream>
 using namespace std;
 
+template <typename T>
 struct array{
    int vmest; 
    int dlina;
-   int *data;
+   T *data;
    
    //Конструктор
    array(int init_vmest): dlina(0), vmest(init_vmest){
@@ -23,11 +24,11 @@ struct array{
     }
     //Функции пошли
     
-    void add(int value) { //O(1)
+    void add(T value) { //O(1)
         data[dlina++] = value;
     }
     
-    void add_index(int index, int value){ //O(1)
+    void add_index(int index, T value){ //O(1)
         data[index] = value;
     }
     
@@ -42,7 +43,7 @@ struct array{
         dlina--;
     }
     
-    void zamena(int index, int value){ //O(1)
+    void zamena(int index, T value){ //O(1)
         data[index] = value;
     }
     
@@ -51,7 +52,7 @@ struct array{
     }
     //изменение вместимости
     void resize(int new_capacity) {
-        int* new_data = new int[new_capacity];
+        T* new_data = new int[new_capacity];
         for (int i = 0; i < dlina; ++i) {
             new_data[i] = data[i];
         }
@@ -69,7 +70,7 @@ struct array{
 };
 
 int main(){
-    array arr(10);
+    array <int> arr(10);
     
     arr.add(1);
     arr.add(2);
@@ -82,3 +83,4 @@ int main(){
     arr.print();
     return 0;
 }
+
