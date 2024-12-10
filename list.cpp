@@ -1,101 +1,126 @@
 #include <iostream>
 
 using namespace std;
-
-// Структура узла двусвязного списка
+//удаление по индексу
+template <typename T>
 struct Node {
-    int data;
-    Node *prev;
-    Node *next;
-
-    Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+    T val;
+    Node* next;
+    Node* prev;
+    Node(T _val) : val(_val), next(nullptr) {}
 };
 
-// Функция для добавления элемента в конец списка
-void append(Node **head, int data) { //O(1)
-    Node *newNode = new Node(data);
-    if (!*head) {
-        *head = newNode;
-        return;
+template <typename T>
+struct dlist {
+    Node<T>* head;
+    Node<T>* tail;
+
+    dlist() : head(nullptr), tail(nullptr) {}
+
+    bool is_empty() {
+        return head == nullptr;
     }
 
-    Node *last = *head;
-    while (last->next) {
-        last = last->next;
-    }
-
-    last->next = newNode;
-    newNode->prev = last;
-}
-
-// Функция для поиска элемента в списке
-Node *find(Node *head, int key) { //O(n)
-    Node *current = head;
-    while (current) {
-        if (current->data == key) {
-            return current;
+    void add_nachalo(T value){
+        Node<T>* p = new Node(value);
+        if (is_empty()){
+            head = p;
+            tail = p;
+            return;
         }
-        current = current->next;
-    }
-    return nullptr;
-}
-
-// Функция для удаления элемента из списка
-void remove(Node **head, int key) { //O(n)
-    Node *nodeToDelete = find(*head, key);
-    if (!nodeToDelete) {
-        return;
+        head->prev = p;
+        p->next = head;
+        head = p;
+        head->prev = nullptr;
     }
 
-    if (nodeToDelete == *head) {
-        *head = nodeToDelete->next;
-        if (*head) {
-            (*head)->prev = nullptr;
+    void print() {
+        if (is_empty()) return;
+        Node<T>* p = head;
+        while (p) {
+            cout << p->val << " ";
+            p = p->next;
         }
-    } else {
-        if (nodeToDelete->prev) {
-            nodeToDelete->prev->next = nodeToDelete->next;
-        }
-        if (nodeToDelete->next) {
-            nodeToDelete->next->prev = nodeToDelete->prev;
-        }
+        cout << endl;
     }
 
-    delete nodeToDelete;
-}
-
-// Функция для вывода списка
-void printList(Node *head) { //O(n)
-    Node *current = head;
-    while (current) {
-        cout << current->data << " ";
-        current = current->next;
+    void add_konec(T value){
+        Node<T>* p = new Node(value);
+        if (is_empty()){
+            head = p;
+            tail = p;
+            return;
+        }
+        tail->next = p;
+        p->prev = tail;
+        tail = p;
+        tail->next = nullptr;
+         
     }
-    cout << endl;
-}
+
+    void del_konec(){
+        Node<T>* del = new Node(0);
+        if (is_empty()){
+            return;
+        } 
+        del = tail;
+        tail = del->prev;
+        del->prev = nullptr;
+        tail->next = nullptr;
+        delete del;
+     }
+
+    void del_nachalo(){
+        Node<T>* del = new Node(0);
+        if (is_empty()){
+            return;
+        } 
+        del = head;
+        head = del->next;
+        del->next = nullptr;
+        head->prev = nullptr;
+        delete del;
+    }
+
+    Node<T>* find(T value) {
+        Node<T>* p = head;
+        while (p && p->val != value) p = p->next;
+        return (p && p->val == value) ? p : nullptr;
+    }
+
+    void del_val(T value){
+        Node<T>* del = head;
+        Node<T>* back = new Node(0);
+        Node<T>* forvard = new Node(0);
+        while (del->val != value) del = del->next;
+        if (del == head){
+            head = del->next;
+            del->next = nullptr;
+            head->prev = nullptr;
+            delete del;
+        } else if (del == tail){
+            tail = del->prev;
+            del->prev = nullptr;
+            tail->next = nullptr;
+            delete del;
+        } else {
+            forvard = del->next;
+            back = del->prev;
+            back->next = forvard;
+            forvard->prev = back;
+            delete del;
+        }
+    }
+};
+
 
 int main() {
-    Node *head = nullptr;
-
-    append(&head, 10);
-    append(&head, 20);
-    append(&head, 30);
-    append(&head, 25);
-    append(&head, 5);
-
-    cout << "Двусвязный список: ";
-    printList(head);
-
-    remove(&head, 20);
-
-    cout << "После удаления 20: ";
-    printList(head);
-
-    if (find(head, 25)) {
-        cout << "25 найдено." << endl;
-    } else {
-        cout << "25 не найдено." << endl;
-    }
-
+    dlist <int> list;
+    list.add_nachalo(5);
+    list.add_nachalo(6);
+    list.add_nachalo(11);
+    list.print(); 
+    list.del_val(11);
+    list.print(); 
     return 0;
 }
