@@ -31,6 +31,17 @@ struct list {
         tail = p;
     }
 
+    void add_first(T _val) {
+        Node<T>* p = new Node(_val);
+        if (is_empty()) {
+            head = p;
+            tail = p;
+            return;
+        }
+        p->next = head;
+        head = p;
+    }
+
     void print() {
         if (is_empty()) return;
         Node<T>* p = head;
@@ -109,6 +120,7 @@ int main()
     l.push_back("3");
     l.push_back("123");
     l.push_back("8");
+    l.add_first("hello");
     l.print();
     cout << l.is_empty() << endl;
     l.remove("123");
