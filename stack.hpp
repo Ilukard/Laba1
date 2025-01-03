@@ -46,15 +46,3 @@ class stack{
         return result;
     }
 };
-
-int main(){
-    stack<int> stc;
-    stc.push(1);
-    stc.push(2);
-    stc.push(3);
-    stc.print();
-    cout << stc.pop() << endl;
-    cout << stc.pop() << endl;
-    stc.print();
-    return 0;
-}

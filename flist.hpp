@@ -5,8 +5,8 @@ template <typename T>
 struct Node {
     T val;
     Node* next;
-
     Node(T _val) : val(_val), next(nullptr) {}
+    Node() = default;
 };
 
 template <typename T>
@@ -41,6 +41,8 @@ struct list {
         p->next = head;
         head = p;
     }
+    
+    
 
     void print() {
         if (is_empty()) return;
@@ -95,7 +97,7 @@ struct list {
             slow = slow->next;
         }
         if (!fast) {
-            cout << "This element does not exist" << endl;
+            cout << "Значение не найдено" << endl;
             return;
         }
         slow->next = fast->next;
@@ -112,24 +114,3 @@ struct list {
         return p;
     }
 };
-
-int main()
-{
-    list <string> l;
-    cout << l.is_empty() << endl;
-    l.push_back("3");
-    l.push_back("123");
-    l.push_back("8");
-    l.add_first("hello");
-    l.print();
-    cout << l.is_empty() << endl;
-    l.remove("123");
-    l.print();
-    l.push_back("1234");
-    l.remove_first();
-    l.print();
-    l.remove_last();
-    l.print();
-    cout << l[0]->val << endl;
-    return 0;
-}

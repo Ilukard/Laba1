@@ -1,17 +1,20 @@
+#pragma once
 #include <iostream>
 
 using namespace std;
-//удаление по индексу
+
 template <typename T>
 struct Node {
     T val;
     Node* next;
     Node* prev;
     Node(T _val) : val(_val), next(nullptr) {}
+    Node() = default;
 };
 
 template <typename T>
-struct dlist {
+class dlist {
+    public:
     Node<T>* head;
     Node<T>* tail;
 
@@ -26,12 +29,14 @@ struct dlist {
         if (is_empty()){
             head = p;
             tail = p;
+            cout << "Список создан" << endl;
             return;
         }
         head->prev = p;
         p->next = head;
         head = p;
         head->prev = nullptr;
+        cout << "Значение добавлено" << endl;
     }
 
     void print() {
@@ -49,18 +54,20 @@ struct dlist {
         if (is_empty()){
             head = p;
             tail = p;
+            cout << "Список создан" << endl;
             return;
         }
         tail->next = p;
         p->prev = tail;
         tail = p;
         tail->next = nullptr;
-         
+        cout << "Значение добавлено" << endl;
     }
 
     void del_konec(){
-        Node<T>* del = new Node(0);
+        Node<T>* del = new Node<T>;
         if (is_empty()){
+            cerr << "Список пуст" << endl;
             return;
         } 
         del = tail;
@@ -68,11 +75,13 @@ struct dlist {
         del->prev = nullptr;
         tail->next = nullptr;
         delete del;
+        cout << "Удалено" << endl;
      }
 
     void del_nachalo(){
-        Node<T>* del = new Node(0);
+        Node<T>* del = new Node<T>;
         if (is_empty()){
+            cerr << "Список пуст" << endl;
             return;
         } 
         del = head;
@@ -80,6 +89,7 @@ struct dlist {
         del->next = nullptr;
         head->prev = nullptr;
         delete del;
+        cout << "Удалено" << endl;
     }
 
     Node<T>* find(T value) {
@@ -89,38 +99,39 @@ struct dlist {
     }
 
     void del_val(T value){
+        if (is_empty()){
+            cerr << "Список пуст" << endl;
+            return;
+        } 
         Node<T>* del = head;
-        Node<T>* back = new Node(0);
-        Node<T>* forvard = new Node(0);
-        while (del->val != value) del = del->next;
+        Node<T>* back = new Node<T>;
+        Node<T>* forvard = new Node<T>;
+        while (del->val != value) {
+            del = del->next;
+            if (del == nullptr){
+                cerr << "Значение не найдено" << endl;
+                return;
+            }
+        }
         if (del == head){
             head = del->next;
             del->next = nullptr;
             head->prev = nullptr;
             delete del;
+            cout << "Удалено" << endl;
         } else if (del == tail){
             tail = del->prev;
             del->prev = nullptr;
             tail->next = nullptr;
             delete del;
+            cout << "Удалено" << endl;
         } else {
             forvard = del->next;
             back = del->prev;
             back->next = forvard;
             forvard->prev = back;
             delete del;
+            cout << "Удалено" << endl;
         }
     }
 };
-
-
-int main() {
-    dlist <int> list;
-    list.add_nachalo(5);
-    list.add_nachalo(6);
-    list.add_nachalo(11);
-    list.print(); 
-    list.del_val(11);
-    list.print(); 
-    return 0;
-}

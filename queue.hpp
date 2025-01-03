@@ -53,15 +53,3 @@ class queue{
         return result;
     }
 };
-
-int main(){
-    queue<int> och;
-    och.push(1);
-    och.push(2);
-    och.push(3);
-    och.print();
-    cout << och.pop() << endl;
-    cout << och.pop() << endl;
-    och.print();
-    return 0;
-}

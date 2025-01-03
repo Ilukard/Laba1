@@ -1,18 +1,21 @@
+#pragma once
+
 #include <iostream>
 using namespace std;
 
 template <typename T>
-struct array{
+class Array{
+    public:
    int vmest; 
    int dlina;
    T *data;
    
    //Конструктор
-   array(int init_vmest): dlina(0), vmest(init_vmest){
-       data = new int[init_vmest];
+   Array(int init_vmest): dlina(0), vmest(init_vmest){
+       data = new T[init_vmest];
    }
    //Деструктор
-   ~array() {
+   ~Array() {
         delete[] data;
     }
     //Итераторы на начало и конец
@@ -68,19 +71,4 @@ struct array{
         cout << endl;
     }
 };
-
-int main(){
-    array <int> arr(10);
-    
-    arr.add(1);
-    arr.add(2);
-    arr.add(3);
-    arr.add(4);
-    arr.add(11);
-    arr.add_index(4, 5);
-    cout << "1 index = " << arr.get_index(1) << endl;
-    arr.del_index(1);
-    arr.print();
-    return 0;
-}
 
